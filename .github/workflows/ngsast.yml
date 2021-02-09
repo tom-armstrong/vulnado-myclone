@@ -18,6 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    # Enable deprecated Environment Variables; Fix: use Environment Secrets 
+    - name: Enable Environment Variables
+      run: |
+        echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
     # We are building this application with Java 11
     - name: Setup Java JDK
       uses: actions/setup-java@v1.3.0
@@ -25,10 +29,6 @@ jobs:
         java-version: 11.0.x
     - name: Package with maven
       run: mvn compile package
-    # Enable deprecated Environment Variables; Fix: use Environment Secrets 
-    - name: Enable Environment Variables
-      run: |
-        echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
     - name: Download ShiftLeft CLI
       run: |
         curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
