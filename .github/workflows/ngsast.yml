@@ -17,6 +17,7 @@ jobs:
   NG_SAST-Build:
     runs-on: windows-latest
     # runs-on: ubuntu-latest
+    environment: secureEnvironment
     steps:
     - uses: actions/checkout@v2
     # Enable deprecated Environment Variables; Fix: use Environment Secrets 
