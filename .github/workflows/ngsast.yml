@@ -30,10 +30,6 @@ jobs:
         java-version: 11.0.x
       env: 
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-    - name: Setup PostgreSQL
-      uses: Harmon758/postgresql-action@v1.0.0
-      env: 
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
     - name: Package with maven
       run: mvn "spring-boot:run"
     # run: mvn compile package
