@@ -46,8 +46,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: NextGen - Retrieve critical ids and titles
       run: |
-        curl -X GET https://www.shiftleft.io/api/v4/orgs/${SHIFTLEFT_ORG_ID}/apps/vulnado/findings?severity=critic
-al -H "Authorization: Bearer ${SHIFTLEFT_ACCESS_TOKEN}" -d '\n'
+        curl -X GET https://www.shiftleft.io/api/v4/orgs/${SHIFTLEFT_ORG_ID}/apps/vulnado/findings?severity=critical -H "Authorization: Bearer ${SHIFTLEFT_ACCESS_TOKEN}" -d '\n'
       env:
         SHIFTLEFT_ORG_ID: ${{ secrets.SHIFTLEFT_ORG_ID }}
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
