@@ -40,8 +40,13 @@ jobs:
         java-version: 1.8
     - name: NextGen Static Analysis
       run: ${GITHUB_WORKSPACE}/sl analyze --app vulnado --tag branch=${{ github.head_ref }} --java --cpg target/vulnado-0.0.1-SNAPSHOT.jar
+      env:
+        SHIFTLEFT_ORG_ID: ${{ secrets.SHIFTLEFT_ORG_ID }}
+        SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: NextGen - Retrieve critical ids and titles
       run: |
-        curl -X GET -v \
+        curl -X GET \
           https://www.shiftleft.io/api/v4/orgs/${SHIFTLEFT_ORG_ID}/apps/vulnado/findings?severity=critic
 al \
          -H "Authorization: Bearer ${SHIFTLEFT_ACCESS_TOKEN}" \
@@ -50,4 +55,3 @@ al \
       env:
         SHIFTLEFT_ORG_ID: ${{ secrets.SHIFTLEFT_ORG_ID }}
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
