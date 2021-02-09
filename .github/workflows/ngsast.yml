@@ -20,9 +20,6 @@ jobs:
     environment: secureEnvironment
     steps:
     - uses: actions/checkout@v2
-    # Debug environment - postgres connectivity
-    #- name: Debugging with tmate
-    #  uses: mxschmitt/action-tmate@v3.3
     # We are building this application with Java 11
     - name: Setup Java JDK
       uses: actions/setup-java@v1.3.0
@@ -41,6 +38,9 @@ jobs:
     # ShiftLeft requires Java 1.8. Post the package step override the version
       env: 
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    # Debug environment - postgres connectivity
+    - name: Debugging with tmate
+      uses: mxschmitt/action-tmate@v3.3
     - name: NextGen Static Analysis
       run: ${GITHUB_WORKSPACE}/sl analyze --app vulnado --tag branch=${{ github.head_ref }} --java --cpg target/vulnado-0.0.1.jar
       env:
