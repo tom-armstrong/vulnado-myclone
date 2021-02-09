@@ -15,36 +15,32 @@ on:
       - master
 jobs:
   NG_SAST-Build:
-    runs-on: windows-latest
-    # runs-on: ubuntu-latest
-    environment: secureEnvironment
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    # Enable deprecated Environment Variables; Fix: use Environment Secrets 
+    - name: Enable Environment Variables
+      run: |
+        echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
     # We are building this application with Java 11
     - name: Setup Java JDK
       uses: actions/setup-java@v1.3.0
       with:
         java-version: 11.0.x
-      env: 
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
     - name: Package with maven
       run: mvn package
     # run: mvn compile package
-      env: 
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
     - name: Download ShiftLeft CLI
       run: |
         curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
     # ShiftLeft requires Java 1.8. Post the package step override the version
-      env: 
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-    # Debug environment - postgres connectivity
-    - name: Debugging with tmate
-      uses: mxschmitt/action-tmate@v3.3
+    - name: Setup Java JDK
+      uses: actions/setup-java@v1.3.0
+      with:
+        java-version: 1.8
     - name: NextGen Static Analysis
-      run: ${GITHUB_WORKSPACE}/sl analyze --app vulnado --tag branch=${{ github.head_ref }} --java --cpg target/vulnado-0.0.1.jar
+      run: ${GITHUB_WORKSPACE}/sl analyze --app ShiftLeftJava --tag branch=${{ github.head_ref }} --java --cpg target/hello-shiftleft-0.0.1.jar
       env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         SHIFTLEFT_ORG_ID: ${{ secrets.SHIFTLEFT_ORG_ID }}
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
